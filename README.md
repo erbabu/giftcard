@@ -6,7 +6,6 @@ Social good application to support local businesses for introducing gift cards o
 - Android smartphone with a version higher than Lollipop
 - Brother label printer QL-820NWB
   - If there is no availability of the said label printer, then use some website (like https://www.online-qrcode-generator.com/) for generating QR code of the gift card number and print it for customer using any regular printer with a gift card template (created using any document software)
-- By default, the application restricts creation of not more than 100 gift cards
 ### Block diagram
 ![Gift Card block diagram](GiftcardAppBH2020-Diagram.png)
 ### Technology
