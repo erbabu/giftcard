@@ -30,3 +30,4 @@ Hope this app will allow a small business to kick start using their own gift car
 - Listing of transactions for the card number
 - Searching the card by phone number and use it for transactions
 - Use the card as a dual card (rewards card + gift card) so that with phone number, rewards in all cards could be collectively used
+- Publishing the app in major App stores (like Amazon app store, Google play store, Apple app store)
