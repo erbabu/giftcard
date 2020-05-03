@@ -14,4 +14,4 @@ Social good application to support local businesses for introducing gift cards o
 - Flutter plug-ins like Brother Label Printer, QR code creator and scanner
 ### Shared files
 - GiftCard-good.lbx (Label printer P-Touch template)
-- Flutter Dart file - to be added
+- giftcard-v1-main.dart (Flutter Dart file)
