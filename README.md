@@ -31,3 +31,12 @@ Hope this app will allow a small business to kick start using their own gift car
 - Searching the card by phone number and use it for transactions
 - Use the card as a dual card (rewards card + gift card) so that with phone number, rewards in all cards could be collectively used
 - Publishing the app in major App stores (like Amazon app store, Google play store, Apple app store)
+### References
+- Firebase Database [Youtube Video](https://www.youtube.com/watch?v=DqJ_KjFzL9I)
+- Printing label using P-Touch template [Youtube Video](https://www.youtube.com/watch?v=1EgXb-bHmc0)
+- Flutter app development [Youtube Video](https://www.youtube.com/watch?v=I9ceqw5Ny-4&list=PLSzsOkUDsvdtl3Pw48-R8lcK2oYkk40cm)
+- Flutter plug-ins
+  - Brother Printer (https://pub.dev/packages/brotherlabelprintdart)
+  - QR creator (https://pub.dev/packages/qr_flutter)
+  - QR scanner (https://pub.dev/packages/flutter_barcode_scanner)
+  - Firebase and Firestore
