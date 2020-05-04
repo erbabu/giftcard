@@ -6,6 +6,7 @@ Social good application to support local businesses for introducing gift cards o
 - Android smartphone with a version higher than Lollipop
 - Brother label printer QL-820NWB
   - If there is no availability of the said label printer, then use some website (like https://www.online-qrcode-generator.com/) for generating QR code of the gift card number and print it for customer using any regular printer with a gift card template (created using any document software). You may use the attached gift card template word document as well.
+- Flutter development environment with an emulator / phone to test (Android preferrably) [Ref link](https://codelabs.developers.google.com/codelabs/flutter-firebase/#2)
 ### Block diagram
 ![Gift Card block diagram](GiftcardAppBH2020-Diagram.png)
 ### Technology
@@ -34,7 +35,7 @@ Hope this app will allow a small business to kick start using their own gift car
 ### References
 - Firebase Database [Youtube Video](https://www.youtube.com/watch?v=DqJ_KjFzL9I)
 - Printing label using P-Touch template [Youtube Video](https://www.youtube.com/watch?v=1EgXb-bHmc0)
-- Flutter app development [Youtube Video](https://www.youtube.com/watch?v=I9ceqw5Ny-4&list=PLSzsOkUDsvdtl3Pw48-R8lcK2oYkk40cm)
+- Flutter app development [Youtube Video](https://www.youtube.com/watch?v=I9ceqw5Ny-4&list=PLSzsOkUDsvdtl3Pw48-R8lcK2oYkk40cm); [Free course](https://www.appbrewery.co/p/intro-to-flutter)
 - Flutter plug-ins
   - Brother Printer (https://pub.dev/packages/brotherlabelprintdart)
   - QR creator (https://pub.dev/packages/qr_flutter)
