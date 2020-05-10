@@ -1,6 +1,12 @@
 import 'dart:math';
 import 'dart:convert';
-
+//to get deviceID
+//device_id: ^0.2.0
+import 'package:device_id/device_id.dart';
+//to use clickable URL text
+//link: ^1.1.0
+import 'package:link/link.dart';
+//iOS font
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -33,6 +39,8 @@ class _MyAppState extends State<MyApp> {
   String _output = '';
   int _amount = 0;
   String _associatednumber = '';
+  String _deviceid = '';
+  int _democardlimit = 5;
   TextEditingController _textController = new TextEditingController();
 
   //scan the QR code
@@ -77,6 +85,8 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _cardnumber = newGCard;
       _scanBarcode = newGCard;
+      _amount = int.parse(_chosenValue);
+      _textController = TextEditingController(text: _chosenValue);
     });
   }
 
@@ -138,36 +148,58 @@ class _MyAppState extends State<MyApp> {
     return;
   }
 
+  Future _totalcardsfordevice() async {
+    _deviceid = await DeviceId.getID;
+    var respectsQuery = Firestore.instance
+        .collection('BH2020GCard')
+        .where('DeviceID', isEqualTo: _deviceid);
+    var querySnapshot = await respectsQuery.getDocuments();
+    var totalEquals = querySnapshot.documents.length;
+    print('Total cards: ' +
+        totalEquals.toString() +
+        ' for this deviceID: ' +
+        _deviceid);
+    return totalEquals;
+  }
+
   //create a new gift card if there is a value and it's not already there
-  void fnCreateCard() {
+  void fnCreateCard() async {
     if (!isValidTransAmount()) {
       return;
     } else {
-      DocumentReference documentReference =
-          Firestore.instance.collection('BH2020GCard').document(_scanBarcode);
-      documentReference.get().then((datasnapshot) {
-        if (!datasnapshot.exists) {
-          Map<String, dynamic> GCard = {
-            'CardNumber': _scanBarcode,
-            'AssociatedNumber': _associatednumber,
-            'Balance': _amount,
-            'Active': true
-          };
-          documentReference.setData(GCard).whenComplete(() {
-            PrintMessage('GCard Created.');
-          });
-        } else {
-          Map<String, dynamic> GCard = {
-            'CardNumber': datasnapshot.data['CardNumber'],
-            'AssociatedNumber': _associatednumber,
-            'Balance': datasnapshot.data['Balance'],
-            'Active': datasnapshot.data['Active']
-          };
-          documentReference.setData(GCard).whenComplete(() {
-            PrintMessage('Gift card already exists, updated ref number.');
-          });
-        }
-      });
+      int totalcards = await _totalcardsfordevice();
+      if (totalcards >= _democardlimit) {
+        PrintMessage('Demo card count exceeded.');
+        return;
+      } else {
+        DocumentReference documentReference =
+            Firestore.instance.collection('BH2020GCard').document(_scanBarcode);
+        documentReference.get().then((datasnapshot) {
+          if (!datasnapshot.exists) {
+            Map<String, dynamic> GCard = {
+              'CardNumber': _scanBarcode,
+              'AssociatedNumber': _associatednumber,
+              'DeviceID': _deviceid,
+              'Balance': _amount,
+              'Active': true
+            };
+            documentReference.setData(GCard).whenComplete(() {
+              PrintMessage('GCard Created.');
+            });
+          } else {
+            Map<String, dynamic> GCard = {
+              'CardNumber': datasnapshot.data['CardNumber'],
+              'AssociatedNumber': _associatednumber,
+              'DeviceID': datasnapshot.data['DeviceID'],
+              'Balance': datasnapshot.data['Balance'],
+              'Active': datasnapshot.data['Active']
+            };
+            documentReference.setData(GCard).whenComplete(() {
+              PrintMessage('Gift card already exists, updated ref number.');
+            });
+          }
+        });
+      }
       return;
     }
   }
@@ -213,6 +245,7 @@ class _MyAppState extends State<MyApp> {
               Map<String, dynamic> GCard = {
                 'CardNumber': datasnapshot.data['CardNumber'],
                 'AssociatedNumber': datasnapshot.data['AssociatedNumber'],
+                'DeviceID': datasnapshot.data['DeviceID'],
                 'Balance': (datasnapshot.data['Balance'] - _amount),
                 'Active': true
               };
@@ -247,6 +280,7 @@ class _MyAppState extends State<MyApp> {
               Map<String, dynamic> GCard = {
                 'CardNumber': datasnapshot.data['CardNumber'],
                 'AssociatedNumber': datasnapshot.data['AssociatedNumber'],
+                'DeviceID': datasnapshot.data['DeviceID'],
                 'Balance': (datasnapshot.data['Balance'] + _amount),
                 'Active': true
               };
@@ -278,6 +312,7 @@ class _MyAppState extends State<MyApp> {
             Map<String, dynamic> GCard = {
               'CardNumber': datasnapshot.data['CardNumber'],
               'AssociatedNumber': datasnapshot.data['AssociatedNumber'],
+              'DeviceID': datasnapshot.data['DeviceID'],
               'Balance': datasnapshot.data['Balance'],
               'Active': true
             };
@@ -308,6 +343,7 @@ class _MyAppState extends State<MyApp> {
             Map<String, dynamic> GCard = {
               'CardNumber': datasnapshot.data['CardNumber'],
               'AssociatedNumber': datasnapshot.data['AssociatedNumber'],
+              'DeviceID': datasnapshot.data['DeviceID'],
               'Balance': datasnapshot.data['Balance'],
               'Active': false
             };
@@ -339,6 +375,27 @@ class _MyAppState extends State<MyApp> {
             style: TextStyle(color: Colors.white),
           ),
         ),
+        drawer: Drawer(
+          child: ListView(
+            children: <Widget>[
+              UserAccountsDrawerHeader(
+                accountName: Text(
+                  'Brother Hackathon2020\nGiftcard App',
+                  textScaleFactor: 1.4,
+                ),
+                currentAccountPicture: CircleAvatar(
+                  backgroundImage: AssetImage('images/GiftCardDemo.png'),
+                ),
+              ),
+              Link(
+                  url: 'https://github.com/erbabu/giftcard',
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text('Instructions'),
+                  ))
+            ],
+          ),
+        ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
@@ -354,10 +411,10 @@ class _MyAppState extends State<MyApp> {
                   children: <Widget>[
                     CircleAvatar(
                       radius: 50,
-                      backgroundImage: AssetImage('images/CloudStore.jpg'),
+                      backgroundImage: AssetImage('images/GiftCardDemo.png'),
                     ),
                     Text(
-                      'Cloud Store',
+                      'Gift Card Demo',
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 30,
