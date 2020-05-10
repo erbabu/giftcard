@@ -7,6 +7,12 @@ Social good application to support local businesses for introducing gift cards o
 - Brother label printer QL-820NWB
   - If there is no availability of the said label printer, then use some website (like https://www.online-qrcode-generator.com/) for generating QR code of the gift card number and print it for customer using any regular printer with a gift card template (created using any document software). You may use the attached gift card template word document as well.
 - Flutter development environment with an emulator / phone to test (Android preferrably) [Ref link](https://codelabs.developers.google.com/codelabs/flutter-firebase/#2)
+### Steps to use:
+- Open the app and click refresh icon to get a new gift card number (19 digit number). It will automatically populate the number in another place in the screen where transaction data is shown.
+- Select the gift card amount. It will automatically populate the amount in another place in the screen where transaction data is shown.
+- Include associated reference text for this card in the respective field (usually phone number but it is a string field).
+- Create card button creates the gift card in firestore database through API. It is not linked to any payment system, instead it is a record keeping transaction system. For a deviceID, in this demo app, only 5 cards are allowed.
+- Similarly buttons are provided to deduct balance, check balance, load additional gift card balance, disable and enable gift card.
 ### Block diagram
 ![Gift Card block diagram](GiftcardAppBH2020-Diagram.png)
 ### Technology
